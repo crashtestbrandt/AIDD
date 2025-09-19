@@ -4,7 +4,7 @@ description: "PR-sized slice of functionality that delivers user value."
 title: "[Story] <Outcome-oriented title>"
 labels: ["type: story"]
 assignees: []
-about: "A PR-sized unit of work. Represents a coherent slice of functionality. Carries acceptance criteria, tests, and contracts."
+about: "A PR-sized unit of work. Represents a coherent slice of functionality (often vertical: UI → API → DB). Carries acceptance criteria, tests, and contracts."
 ---
 
 ## Summary
