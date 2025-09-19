@@ -63,9 +63,9 @@ These align with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 **For each Feature Epic**
 
 * **Architecture Overview + ADRs**  
-  * AI drafts, **you approve & commit**: one ADR per significant architectural choice.
-  * AI drafts, **you verify**: architecture conformance & traceability (link ADR IDs and C4 elements impacted).
-  * Establish architecture conformance & traceability (link ADR IDs and C4 elements impacted).
+  * Draft ADRs for each significant architectural choice (**AI**); review and commit (**human**).
+  * Link ADR IDs and impacted C4 elements to establish architecture conformance & traceability.
+  * Produce a lightweight C4 overview (context/container/component).
 
 * **Implementation Plan (story-level)**  
   * You + AI: Generate an incremental, risk-first plan consisting of multiple **Stories**.  
@@ -107,7 +107,7 @@ See [PROMPTS.md](./PROMPTS.md).
   * Drafting changelogs, ADR summaries, or runbooks.
 
 * Prompt hygiene:
-  * Store prompts in a **Prompt Registry** (version-controlled).  
+  * Store prompts in a **Prompt Registry** under prompts/ with semantic versions (e.g., auth/1.2.0.md). 
   * Treat prompts as code (reviewable, testable, diffable).  
   * Use structured prompts for repeatable outputs (YAML/JSON schemas).  
 
@@ -135,7 +135,7 @@ See [GATES.md](./GATES.md).
 * Security checks: SAST, SCA, IaC scans, secret detection.  
 * Performance budgets: p95 latency, throughput, token usage.  
 * Observability budgets: metrics/log/traces must meet **cardinality thresholds** (guard against high-cardinality labels).
-* AI eval scores: accuracy/factuality, refusal quality, safety checks, and cost/latency budgets.
+* AI eval scores: accuracy/factuality, refusal quality, safety checks, and cost/latency budgets with non-regression thresholds.
 
 ---
 
