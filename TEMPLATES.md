@@ -94,6 +94,7 @@ description: "Production-ready feature composed of multiple Stories."
 title: "[Epic] <Feature name>"
 labels: ["type: epic"]
 assignees: []
+about: "A production-ready feature composed of multiple stories. Anchors architecture, ADRs, and traceability. Lives across multiple sprints if needed."
 body:
   - type: input
     id: summary
@@ -236,6 +237,7 @@ description: "PR-sized unit of work delivering a vertical slice."
 title: "[Story] <Concise description>"
 labels: ["type: story"]
 assignees: []
+about: "A PR-sized unit of work. Represents a coherent slice of functionality (often vertical: UI → API → DB). Carries acceptance criteria, tests, and contracts."
 body:
   - type: input
     id: epic_link
@@ -383,6 +385,7 @@ name: "Task"
 description: "Per-prompt unit of work or small developer action supporting a Story."
 title: "[Task] <Actionable verb + object>"
 labels: ["type: task"]
+about: "A per-prompt unit of work. Represents one or a few changes or tool runs that move a story forward. Multiple tasks roll into a story."
 assignees: []
 body:
   - type: input
