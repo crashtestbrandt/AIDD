@@ -4,6 +4,13 @@
 
 > Make agents actually use the templates.
 
+* [Home](./README.md)
+* [ADR Gate-Keeper](#adr-gate-keeper)
+* [Story Planner](#story-planner)
+* [Task Synthesizer](#task-synthesizer)
+
+---
+
 ## ADR Gate-Keeper
 
 ```
