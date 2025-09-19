@@ -15,6 +15,10 @@
 
 ## Concepts
 
+### Issue Types
+
+These align with Scrum/Agile usage: Epics group Stories, Stories decompose into Tasks. The twist is AI-driven “per-prompt” tasks.
+
 * **Feature Epic**  
   A production-ready feature composed of multiple stories. Anchors architecture, ADRs, and traceability. Lives across multiple sprints if needed.
 
@@ -24,9 +28,7 @@
 * **Task**  
   A per-prompt unit of work. Represents one or a few changes or tool runs that move a story forward (e.g., generating a contract, writing unit tests, updating a migration script). Multiple tasks roll into a story.
 
-This aligns with Scrum/Agile usage: Epics group Stories, Stories decompose into Tasks. The twist is AI-driven “per-prompt” tasks.
-
-## Related / Adjacent Concepts
+### Related/Adjacent
 
 * **Architecture Decision Record (ADR)**  
   Lightweight record of significant design choices. Linked from Epics and Stories for traceability. AI may draft; humans approve and commit.
