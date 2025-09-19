@@ -3,6 +3,8 @@
 * [Concepts](#concepts)
 * [Pipeline Overview](#pipeline-overview)
 * [Guidance](#guidance)
+* [Quality Gates](#quality-gates)
+  * [GATES.md](./GATES.md)
 * [Templates](#templates)
   * [TEMPLATES.md](./TEMPLATES.md)
 
@@ -115,7 +117,9 @@ This aligns with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 
 ---
 
-**Quality Gates**
+## Quality Gates
+
+See [GATES.md](./GATES.md).
 
 * Coverage ≥ X% (line/branch).  
 * Mutation testing ≥ Y% (ensures meaningful unit tests).  
@@ -128,7 +132,7 @@ This aligns with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 
 ## Templates
 
-See [Templates](./TEMPLATES.md).
+See [TEMPLATES.md](./TEMPLATES.md).
 
 Suggested templates:
 * **Feature Epic Template** → Architecture overview, ADR links, objectives, incremental plan.  
