@@ -27,6 +27,8 @@ A short, descriptive title (e.g., "Use GraphQL for API contracts").
 ## Status
 Proposed | Accepted | Deprecated | Superseded by ADR-XXX
 
+> Include date and decision owner; keep ADRs immutable after “Accepted” (create a new ADR to change course).
+
 ## Context
 What problem are we trying to solve?  
 What constraints or forces are shaping the decision?  
@@ -35,6 +37,8 @@ What’s the background (e.g., related epics, stories, or incidents)?
 ## Decision
 The decision we made, in full sentences.  
 (Include diagrams, snippets, or contracts if relevant.)
+
+> If contracts change, link exact versions (e.g., OpenAPI commit hash) and deprecation policy.
 
 ## Rationale
 Why this decision?  
