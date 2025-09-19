@@ -1,6 +1,6 @@
 <!-- ./README.md -->
 
-# AI-Driven Development Pipeline
+# AI-Driven Development (AIDD) Pipeline
 
 > This repository defines a lightweight, opinionated framework for running modern software delivery with AI in the loop.
 > It combines Agile issue types (Feature Epic → Story → Task) with DevOps best practices (contracts, tests, observability, quality gates) and adds AI-specific guidance for prompts, evaluation, and governance.
