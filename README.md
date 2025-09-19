@@ -52,13 +52,3 @@ This aligns with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 
 See [Templates](./TEMPLATES.md).
 
----
-
-
-
-
-
-
----
-
-Would you like me to take this reframed outline and **turn it into a set of standardized templates** (Epic, Story, Task) with headings for ADRs, contracts, tests, etc.? That way you could drop them directly into GitHub/Jira/Notion and have consistency across the pipeline.
