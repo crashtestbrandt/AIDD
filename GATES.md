@@ -1,3 +1,5 @@
+<!-- ./GATES.md -->
+
 # Quality Gates
 
 This document provides a drop-in [GitHub Actions workflow](#github-actions-workflow) that enforces Story/Task references and ADR linkage whenever architectural/contract/infra/schema/prompt files change. It comments helpful guidance on failure so Copilot/Codex (and humans) know exactly what to fix.
