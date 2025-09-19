@@ -5,9 +5,23 @@
 > Make agents actually use the templates.
 
 * [Home](./README.md)
+* [Model/Tool Context](#modeltool-context)
 * [ADR Gate-Keeper](#adr-gate-keeper)
 * [Story Planner](#story-planner)
 * [Task Synthesizer](#task-synthesizer)
+
+---
+
+## Model/Tool Context
+
+Repo awareness for all following tasks:
+- ADR templates live in docs/adr/ADR-TEMPLATE.md; actual ADRs are docs/adr/ADR-###-title.md
+- Story/Task templates are in .github/ISSUE_TEMPLATE/
+- PR template is .github/pull_request_template.md
+- Contracts live in contracts/, openapi/, proto/, or services/*/contracts/
+- Infra/IaC in infrastructure/, k8s/, helm/, terraform/, pulumi/
+- Prompt registry in prompts/ or prompt_registry/
+Before planning or generating artifacts, scan these paths and link to relevant files. Best practice is to include, e.g. `./AGENTS.md`, `.github/copilot-instructions.md`, etc..
 
 ---
 
