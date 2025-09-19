@@ -38,7 +38,7 @@ What’s the background (e.g., related epics, stories, or incidents)?
 The decision we made, in full sentences.  
 (Include diagrams, snippets, or contracts if relevant.)
 
-> If contracts change, link exact versions (e.g., OpenAPI commit hash) and deprecation policy.
+> If contracts change, link exact versions (e.g., OpenAPI commit hash) and deprecation policy. Note any backward/forward compatibility guarantees.
 
 ## Rationale
 Why this decision?  
@@ -218,7 +218,7 @@ body:
 
 ## Tasks
 
-* List of implementation Tasks (link each)
+* List of implementation Tasks (link each). Tasks never ship user-visible behavior alone; they support acceptance criteria for the Story.
 
 ## Definition of Done
 
