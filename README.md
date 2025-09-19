@@ -28,10 +28,10 @@ This aligns with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 ## Related / Adjacent Concepts
 
 * **Architecture Decision Record (ADR)**  
-  Lightweight record of significant design choices. Linked from Epics and Stories for traceability.
+  Lightweight record of significant design choices. Linked from Epics and Stories for traceability. AI may draft; humans approve and commit.
 
 * **C4 Model**  
-  Context → Container → Component diagrams used at the Feature Epic level to clarify architecture scope.
+  Context → Container → Component diagrams used at the Feature Epic level to clarify architecture scope (code-level diagrams optional).
 
 * **Definition of Ready (DoR)**  
   Entry criteria for starting work on a Story/Task (e.g., acceptance criteria written, contracts drafted, risks identified).
@@ -59,8 +59,9 @@ This aligns with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 
 * **Architecture Overview + ADRs**  
   * You + AI: Produce a high-level C4 (Context/Container/Component).
-  * AI: Record an ADR per significant architectural choice.  
+  * AI drafts, **you approve & commit**: one ADR per significant architectural choice.
   * AI: Establish architecture conformance & traceability (link to ADR IDs, C4 elements touched).
+  * AI drafts, **you verify**: architecture conformance & traceability (link ADR IDs and C4 elements impacted).
 
 * **Implementation Plan (story-level)**  
   * You + AI: Generate an incremental, risk-first plan consisting of multiple **Stories**.  
@@ -72,8 +73,8 @@ This aligns with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 
 * **Story Plan**  
   * You + AI: Define scope, acceptance criteria, and test strategy.  
-  * You + AI: Specify contracts (OpenAPI/Protobuf/GraphQL SDL), SLAs/SLOs, and observability signals.  
-  * AI: Break work into **Tasks**.  
+  * You + AI: Specify contracts (OpenAPI/Protobuf/GraphQL SDL) as **source of truth** with versioning & deprecation policy, plus SLAs/SLOs and observability signals. 
+  * AI: Break work into **Tasks** that each map to acceptance criteria.
   * You + AI: Establish DoR/DoD upfront.
 
 ---
@@ -81,9 +82,11 @@ This aligns with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 **For each Task**
 
 * **Task Execution**  
-  * AI: Start contract-first (API/interface updates).  
-  * AI: Write acceptance tests (ATDD/BDD optional) and unit/property tests before implementation.  
-  * AI: Implement against those tests, using AI prompts/tools as needed.  
+  * AI: Propose contract-first changes (API/interface deltas). **You approve schema PRs.** 
+  * AI: Draft acceptance tests (ATDD/BDD optional) and unit/property tests before implementation.  
+  * AI: Implement against those tests, using AI prompts/tools as needed.
+  * AI: Generate scaffolding; **you review** against architecture/story, using AI tools as needed.
+  * AI: Conduct implementation against tests; **you review** and conduct smoke tests/sanity checks.
   * Tasks are traceable back to Story acceptance criteria and Feature Epic ADRs.  
 
 ---
