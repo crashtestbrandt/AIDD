@@ -1,9 +1,14 @@
-# ai-devops
-Resources for AI-driven development operations
+# AI-Driven Development Pipeline
 
-## AI-Driven Development Pipeline
+* [Concepts](#concepts)
+* [Pipeline Overview](#pipeline-overview)
+* [Guidance](#guidance)
+* [Templates](#templates)
+  * [TEMPLATES.md](./TEMPLATES.md)
 
-### Concepts
+---
+
+## Concepts
 
 * **Feature Epic**  
   A production-ready feature composed of multiple stories. Anchors architecture, ADRs, and traceability. Lives across multiple sprints if needed.
@@ -16,7 +21,7 @@ Resources for AI-driven development operations
 
 This aligns with Scrum/Agile usage: Epics group Stories, Stories decompose into Tasks. The twist is AI-driven “per-prompt” tasks.
 
-### Related / Adjacent Concepts
+## Related / Adjacent Concepts
 
 * **Architecture Decision Record (ADR)**  
   Lightweight record of significant design choices. Linked from Epics and Stories for traceability.
@@ -44,7 +49,7 @@ This aligns with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 
 ---
 
-### Pipeline Overview
+## Pipeline Overview
 
 **For each Feature Epic**
 
@@ -79,7 +84,7 @@ This aligns with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 
 ---
 
-### Guidance
+## Guidance
 
 **Prompting & Tooling**
 
@@ -121,7 +126,7 @@ This aligns with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 
 ---
 
-### Templates
+## Templates
 
 See [Templates](./TEMPLATES.md).
 
