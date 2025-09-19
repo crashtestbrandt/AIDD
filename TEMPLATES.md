@@ -1,6 +1,6 @@
 # TEMPLATES
 
-Each template is designed to double as a GitHub issue template, Jira issue format, Notion page, etc., providing:
+Objectives:
 
 * **Traceability** (Epic → Story → Task → ADR/tests)
 * **Quality gates baked in** (tests, contracts, observability, rollback)
@@ -124,4 +124,117 @@ Each template is designed to double as a GitHub issue template, Jira issue forma
 * Test(s) written & passing
 * Code reviewed/approved
 * Artifacts committed & linked back to Story
+
+---
+
+Great — here’s a **PR template** designed to align perfectly with the Feature Epic → Story → Task hierarchy. It ensures every pull request is effectively a **Story artifact**: scoped, tested, traceable, and ready for audit.
+
+You can drop this into `.github/pull_request_template.md` (or equivalent for GitLab/Bitbucket).
+
+---
+
+# 📥 Pull Request Template
+
+**Title:** `[Story] <concise description>`
+*Linked Story:* #`<Story ID>`
+*Linked Epic:* #`<Epic ID>`
+
+---
+
+## 📌 Summary
+
+* What does this PR implement?
+* Why is it needed?
+* Which acceptance criteria from the Story does it fulfill?
+
+---
+
+## 🗂️ Scope
+
+* ✅ What’s included in this PR
+* ❌ What’s explicitly out of scope (to avoid scope creep)
+
+---
+
+## 🔗 Traceability
+
+* **ADR References:** (IDs/links to ADRs affected by this PR)
+* **Contracts Updated:** (OpenAPI/Protobuf/GraphQL SDLs)
+* **Tasks Completed:**
+
+  * \#`<Task ID>`
+  * \#`<Task ID>`
+
+---
+
+## ✅ Acceptance Criteria
+
+*List the acceptance criteria being satisfied (copy from Story). Mark them as completed when implemented.*
+
+* [ ] `<Criterion 1>`
+* [ ] `<Criterion 2>`
+* [ ] `<Criterion 3>`
+
+---
+
+## 🧪 Test Coverage
+
+* **Unit tests:** \[ ] Added / \[ ] Updated / \[ ] Not applicable
+* **Property-based tests:** \[ ] Added / \[ ] Not applicable
+* **Integration/contract tests:** \[ ] Added / \[ ] Updated / \[ ] Not applicable
+* **Performance budget check:** \[ ] Met
+* **Security/abuse cases:** \[ ] Covered
+
+---
+
+## 📊 Observability
+
+* [ ] Metrics emitted
+* [ ] Logs/tracepoints added or updated
+* [ ] Dashboards/alerts configured (if applicable)
+
+---
+
+## 🛡️ Quality Gates
+
+* [ ] Linting & formatting pass
+* [ ] Static analysis (SAST/SCA/secrets) pass
+* [ ] Mutation testing score meets threshold
+* [ ] Contracts backward-compatible
+* [ ] No SLO/SLA regressions
+
+---
+
+## 📝 Documentation
+
+* [ ] README / usage docs updated
+* [ ] Runbooks updated (if applicable)
+* [ ] ADRs amended/added (if architectural change)
+
+---
+
+## 🧩 Rollout
+
+* [ ] Feature behind flag
+* [ ] Rollback plan documented
+* [ ] Canary or shadow-mode tested (if applicable)
+
+---
+
+# Reviewer Checklist
+
+*Reviewers can tick these to confirm compliance.*
+
+* [ ] Code is clear and maintainable
+* [ ] Tests cover acceptance criteria and edge cases
+* [ ] Contracts are accurate and versioned
+* [ ] Observability is sufficient for debugging
+* [ ] Security and compliance risks addressed
+* [ ] Docs and runbooks updated
+
+
+
+---
+
+
 
