@@ -28,6 +28,8 @@ These align with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 * **Task**  
   A per-prompt unit of work. Represents one or a few changes or tool runs that move a story forward (e.g., generating a contract, writing unit tests, updating a migration script). Multiple tasks roll into a story.
 
+  > Tasks never ship user-visible behavior alone; Stories do.
+
 ### Related/Adjacent
 
 * **Architecture Decision Record (ADR)**  
@@ -43,7 +45,7 @@ These align with Scrum/Agile usage: Epics group Stories, Stories decompose into 
   Exit criteria ensuring quality gates are met (tests passing, coverage thresholds, observability signals, docs updated).
 
 * **Contracts**  
-  Shared API/interface schemas (OpenAPI, GraphQL SDL, Protobuf, etc.) used as the source of truth for Story/Task implementation.
+  Shared API/interface schemas (OpenAPI, GraphQL SDL, Protobuf, etc.) used as the source of truth for Story/Task implementation, with an explicit compatibility policy (backward/forward) and deprecation timelines.
 
 * **Quality Gates**  
   Automated checks in CI/CD that enforce coverage, mutation scores, security scanning, AI eval scores, and performance budgets.
@@ -61,10 +63,9 @@ These align with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 **For each Feature Epic**
 
 * **Architecture Overview + ADRs**  
-  * You + AI: Produce a high-level C4 (Context/Container/Component).
   * AI drafts, **you approve & commit**: one ADR per significant architectural choice.
-  * AI: Establish architecture conformance & traceability (link to ADR IDs, C4 elements touched).
   * AI drafts, **you verify**: architecture conformance & traceability (link ADR IDs and C4 elements impacted).
+  * Establish architecture conformance & traceability (link ADR IDs and C4 elements impacted).
 
 * **Implementation Plan (story-level)**  
   * You + AI: Generate an incremental, risk-first plan consisting of multiple **Stories**.  
@@ -76,7 +77,7 @@ These align with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 
 * **Story Plan**  
   * You + AI: Define scope, acceptance criteria, and test strategy.  
-  * You + AI: Specify contracts (OpenAPI/Protobuf/GraphQL SDL) as **source of truth** with versioning & deprecation policy, plus SLAs/SLOs and observability signals. 
+  * You + AI: Specify contracts (OpenAPI/Protobuf/GraphQL SDL) as **source of truth** with versioning & deprecation policy, plus SLAs/SLOs and observability signals (with cardinality budgets and stable naming). 
   * AI: Break work into **Tasks** that each map to acceptance criteria.
   * You + AI: Establish DoR/DoD upfront.
 
@@ -87,9 +88,7 @@ These align with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 * **Task Execution**  
   * AI: Propose contract-first changes (API/interface deltas). **You approve schema PRs.** 
   * AI: Draft acceptance tests (ATDD/BDD optional) and unit/property tests before implementation.  
-  * AI: Implement against those tests, using AI prompts/tools as needed.
-  * AI: Generate scaffolding; **you review** against architecture/story, using AI tools as needed.
-  * AI: Conduct implementation against tests; **you review** and conduct smoke tests/sanity checks.
+  * AI: Generate scaffolding and implement against those tests; **you review** for conformance to Story/ADR, then run smoke/sanity checks.
   * Tasks are traceable back to Story acceptance criteria and Feature Epic ADRs.  
 
 ---
@@ -123,7 +122,7 @@ See [PROMPTS.md](./PROMPTS.md).
 * **Unit & property tests** at the base (fast, automated).  
 * **Contract & integration slice tests** in the middle.  
 * **End-to-end acceptance tests** at the top (thin layer, only happy paths + critical flows).  
-* **AI-specific tests** (prompt regression, jailbreak/abuse tests, factuality/precision evals).  
+* **AI-specific tests** (prompt regression, jailbreak/abuse tests, accuracy/factuality, refusal quality, cost/latency budgets).  
 
 ---
 
@@ -136,7 +135,7 @@ See [GATES.md](./GATES.md).
 * Security checks: SAST, SCA, IaC scans, secret detection.  
 * Performance budgets: p95 latency, throughput, token usage.  
 * Observability budgets: metrics/log/traces must meet **cardinality thresholds** (guard against high-cardinality labels).
-* AI eval scores: factuality, refusal quality, safety checks.  
+* AI eval scores: accuracy/factuality, refusal quality, safety checks, and cost/latency budgets.
 
 ---
 
