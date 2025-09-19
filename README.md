@@ -19,6 +19,7 @@
   * [GATES.md](./GATES.md)
 * [Templates](#templates)
   * [TEMPLATES.md](./TEMPLATES.md)
+* [Bootstrap](#bootstrap)
 
 ---
 
@@ -187,7 +188,62 @@ See [GATES.md](./GATES.md).
 See [TEMPLATES.md](./TEMPLATES.md).
 
 Suggested templates:
-* **Feature Epic Template** → Architecture overview, ADR links, objectives, incremental plan.  
-* **Story Template** → Acceptance criteria, contract deltas, test plan, DoR/DoD.  
-* **Task Template** → Prompt/tooling steps, linked Story/ADR, test-first checklist.  
-* **ADR Template** → Context, decision, rationale, alternatives.  
+* **Feature Epic Template** → Architecture overview, ADR links, objectives, incremental plan.
+* **Story Template** → Acceptance criteria, contract deltas, test plan, DoR/DoD.
+* **Task Template** → Prompt/tooling steps, linked Story/ADR, test-first checklist.
+* **ADR Template** → Context, decision, rationale, alternatives.
+
+## Bootstrap
+
+# BOOTSTRAP PROMPT: Fresh Project
+
+
+Review the following four web resources:
+
+- https://github.com/crashtestbrandt/AIDD/blob/main/README.md  
+- https://github.com/crashtestbrandt/AIDD/blob/main/TEMPLATES.md  
+- https://github.com/crashtestbrandt/AIDD/blob/main/GATES.md  
+- https://github.com/crashtestbrandt/AIDD/blob/main/PROMPTS.md  
+
+Then:  
+
+This repository needs to follow the AIDD ("AI-Driven Development & Delivery") framework. Generate a detailed plan / checklist / scaffold (in Markdown) for how to structure the repository, what configuration files, templates, gates, and prompt assets to include, how to integrate them, and what workflows to establish.  
+
+Include in your plan:
+
+- folder & file layout for code, templates, prompts, gates, etc.  
+- what initial template files to include (and rough content or placeholders) using AIDD’s template style  
+- what "gates" (quality / review checkpoints) to set up, and how to enforce them (e.g. via CI, pull request reviews, tooling)  
+- what prompts to capture or define upfront, per AIDD’s PROMPTS.md guidelines  
+- how to ensure the project remains consistent with the AIDD philosophy over time (e.g. versioning of templates, ownership, onboarding)  
+- approximate timeline / phases for getting all this in place  
+
+Output should be actionable, defensible (you can explain *why* each component is useful), and tailored for a fresh project starting from scratch.  
+
+---
+
+# BOOTSTRAP PROMPT: Existing Project
+
+Review the following four web resources:
+
+- https://github.com/crashtestbrandt/AIDD/blob/main/README.md  
+- https://github.com/crashtestbrandt/AIDD/blob/main/TEMPLATES.md  
+- https://github.com/crashtestbrandt/AIDD/blob/main/GATES.md  
+- https://github.com/crashtestbrandt/AIDD/blob/main/PROMPTS.md  
+
+Then:  
+
+
+Your goal is to adapt this project to comply with the AIDD ("AI-Driven Development") framework. Produce a detailed, incremental implementation plan (with phases) that is defensible, practical, and minimizes disruption.  
+
+The plan should include:
+
+- a baseline assessment: what parts of the current project already align with AIDD (templates, prompt assets, quality gates, etc.), and what is missing  
+- phase-by-phase steps (e.g. Phase 1: quick wins; Phase 2: deeper integration; Phase 3: process embedding).  
+- for each phase, which templates to introduce or update, which existing artifacts to refactor, which gates to enforce and how (CI, PR policy, tooling, etc.)  
+- how to define / capture missing prompts (per PROMPTS.md) and where to store them  
+- how to integrate the gates (from GATES.md) in the existing workflow without large disruption  
+- how to manage change: version control, documentation, ownership, training of team, rollback / risk mitigation  
+- metrics or checkpoints to evaluate progress and ensure adoption  
+
+Produce the plan in a format suitable for presentation (e.g. as a roadmap or schedule) so stakeholders can see what will be done, when, and why.
