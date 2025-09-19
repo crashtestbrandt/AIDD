@@ -67,6 +67,7 @@ jobs:
         ^(prompts/|prompt_registry/) # prompt/policy assets for AI
         ^(services/.*/contracts/.*)$
         ^(proto/.*\.proto)$
+        ^(openapi/.*\.(ya?ml|json))$
 
     steps:
       - name: Checkout (shallow)
@@ -196,6 +197,28 @@ jobs:
               issue_number: pr.number,
               body
             });
+
+  adr-lint:
+    if: always()
+    needs: policy-checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Lint ADRs for required sections
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          fails=0
+          for f in docs/adr/ADR-*.md; do
+            echo "Linting $f"
+            for h in "## Title" "## Status" "## Context" "## Decision" "## Rationale" "## Consequences" "## References"; do
+              if ! grep -q "^$h" "$f"; then
+                echo "::error file=$f,title=Missing heading::$h"
+                fails=1
+              fi
+            done
+          done
+          exit $fails
 ```
 
 ---
