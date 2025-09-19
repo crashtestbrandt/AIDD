@@ -2,6 +2,15 @@
 
 # AI-Driven Development Pipeline
 
+> This repository defines a lightweight, opinionated framework for running modern software delivery with AI in the loop.
+> It combines Agile issue types (Feature Epic → Story → Task) with DevOps best practices (contracts, tests, observability, quality gates) and adds AI-specific guidance for prompts, evaluation, and governance.
+>
+> The goal is to make AI agents first-class contributors: they draft ADRs, contracts, tests, and scaffolding, while humans approve, refine, and own architectural decisions. Each Task is a per-prompt unit of work, Stories are PR-sized slices of functionality, and Feature Epics anchor production-ready features with architecture and traceability.
+>
+> With templates, prompts, and CI/CD workflows included, this repo provides a repeatable structure where AI tools, developers, and quality gates all align to produce safe, testable, and shippable software.
+
+---
+
 * [Concepts](#concepts)
 * [Pipeline Overview](#pipeline-overview)
 * [Guidance](#guidance)
@@ -59,6 +68,40 @@ These align with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 ---
 
 ## Pipeline Overview
+
+**Sequence Diagram**
+
+```mermaid
+sequenceDiagram
+    participant Epic as Feature Epic
+    participant ADR as ADR Gatekeeper
+    participant Story as Story
+    participant Task as Task
+    participant CI as CI/CD Quality Gates
+    participant Release as Release
+
+    Epic->>ADR: Architecture overview and C4
+    ADR-->>Epic: ADR drafted if needed
+
+    Epic->>Story: Define Stories (risk-first plan)
+    Story->>Story: Scope, acceptance criteria, test strategy
+    Story->>Story: Specify contracts, SLOs, observability
+    Story->>Task: Break into Tasks
+
+    Task->>Task: Contract-first deltas
+    Task->>Task: Write tests (ATDD/BDD, unit/property)
+    Task->>Task: Implement against tests (AI-assisted)
+    Task->>Story: Trace back to Story acceptance criteria and ADRs
+
+    Task->>CI: Submit work for checks
+    CI-->>Task: Pass or Fail
+    CI-->>Story: Merge behind feature flag if pass
+
+    Story->>Epic: Contribute toward Epic DoD
+    Epic->>Release: When DoD met, enable flag
+    Release->>Release: Update runbooks, dashboards, alerts
+
+```
 
 **For each Feature Epic**
 
