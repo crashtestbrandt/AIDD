@@ -1,4 +1,4 @@
-<!-- PROMPTS.md -->
+<!-- ./PROMPTS.md -->
 
 # Prompts
 
