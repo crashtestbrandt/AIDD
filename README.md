@@ -5,6 +5,7 @@
 * [Concepts](#concepts)
 * [Pipeline Overview](#pipeline-overview)
 * [Guidance](#guidance)
+  * [PROMPTS.md](./PROMPTS.md)
 * [Quality Gates](#quality-gates)
   * [GATES.md](./GATES.md)
 * [Templates](#templates)
@@ -92,6 +93,8 @@ This aligns with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 ---
 
 ## Guidance
+
+See [PROMPTS.md](./PROMPTS.md).
 
 **Prompting & Tooling**
 
