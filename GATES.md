@@ -16,7 +16,7 @@ This document provides a drop-in [GitHub Actions workflow](#github-actions-workf
   * `prompts/`, `prompt_registry/` (your AI prompt/policy assets)
 * **Requires Story/Task refs** in the PR title or body (e.g., `#123`, `STORY-42`, `TASK-7`, `GH-99`).
 * **Requires ADR refs** (e.g., `ADR-001`) when architectural areas changed.
-* **Comments a friendly summary** on every run so Copilot/Codex can pick up the pattern and auto-fill next time.
+* **Comments a friendly summary** on every run so Copilot/Codex can pick up the pattern and auto-fill next time (and so humans have one-glance guidance).
 * **Easy to tune**: edit the regexes at the top of the workflow’s `env:` block.
 
 ---
@@ -29,7 +29,8 @@ This document provides a drop-in [GitHub Actions workflow](#github-actions-workf
 
    * `**ADR(s):** [ADR-###](./docs/adr/ADR-###-title.md)`
      (You already have this — nice.)
-4. If you want stricter enforcement, add a second job to **lint ADR content** (check required headings: Title/Status/Context/Decision/Rationale/Consequences/References). Happy to provide that too if you want it.
+4. If you want stricter enforcement, add a second job to **lint ADR content** (check required headings: Title/Status/Context/Decision/Rationale/Consequences/References).
+5. On GitHub Enterprise, ensure org policies allow the workflow to post comments (requires `issues: write`).
 
 ## GitHub Actions Workflow
 
