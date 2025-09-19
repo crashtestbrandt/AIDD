@@ -58,12 +58,12 @@ This aligns with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 **For each Feature Epic**
 
 * **Architecture Overview + ADRs**  
-  * Produce a high-level C4 (Context/Container/Component).  
-  * Record an ADR per significant architectural choice.  
-  * Establish architecture conformance & traceability (link to ADR IDs, C4 elements touched).
+  * You + AI: Produce a high-level C4 (Context/Container/Component).
+  * AI: Record an ADR per significant architectural choice.  
+  * AI: Establish architecture conformance & traceability (link to ADR IDs, C4 elements touched).
 
 * **Implementation Plan (story-level)**  
-  * Generate an incremental, risk-first plan consisting of multiple **Stories**.  
+  * You + AI: Generate an incremental, risk-first plan consisting of multiple **Stories**.  
   * Each Story must show how it aligns with the Epic’s architecture and objectives.
 
 ---
@@ -71,19 +71,19 @@ This aligns with Scrum/Agile usage: Epics group Stories, Stories decompose into 
 **For each Story**
 
 * **Story Plan**  
-  * Define scope, acceptance criteria, and test strategy.  
-  * Specify contracts (OpenAPI/Protobuf/GraphQL SDL), SLAs/SLOs, and observability signals.  
-  * Break work into **Tasks**.  
-  * Establish DoR/DoD upfront.
+  * You + AI: Define scope, acceptance criteria, and test strategy.  
+  * You + AI: Specify contracts (OpenAPI/Protobuf/GraphQL SDL), SLAs/SLOs, and observability signals.  
+  * AI: Break work into **Tasks**.  
+  * You + AI: Establish DoR/DoD upfront.
 
 ---
 
 **For each Task**
 
 * **Task Execution**  
-  * Start contract-first (API/interface updates).  
-  * Write acceptance tests (ATDD/BDD optional) and unit/property tests before implementation.  
-  * Implement against those tests, using AI prompts/tools as needed.  
+  * AI: Start contract-first (API/interface updates).  
+  * AI: Write acceptance tests (ATDD/BDD optional) and unit/property tests before implementation.  
+  * AI: Implement against those tests, using AI prompts/tools as needed.  
   * Tasks are traceable back to Story acceptance criteria and Feature Epic ADRs.  
 
 ---
