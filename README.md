@@ -195,9 +195,9 @@ Suggested templates:
 
 ## Bootstrap
 
-# BOOTSTRAP PROMPT: Fresh Project
+# Bootstrap Prompt: Fresh Project
 
-
+```
 Review the following four web resources:
 
 - https://github.com/crashtestbrandt/AIDD/blob/main/README.md  
@@ -218,12 +218,14 @@ Include in your plan:
 - how to ensure the project remains consistent with the AIDD philosophy over time (e.g. versioning of templates, ownership, onboarding)  
 - approximate timeline / phases for getting all this in place  
 
-Output should be actionable, defensible (you can explain *why* each component is useful), and tailored for a fresh project starting from scratch.  
+Output should be actionable, defensible (you can explain *why* each component is useful), and tailored for a fresh project starting from scratch.
+```
 
 ---
 
-# BOOTSTRAP PROMPT: Existing Project
+# Bootstrap Prompt: Existing Project
 
+```
 Review the following four web resources:
 
 - https://github.com/crashtestbrandt/AIDD/blob/main/README.md  
@@ -247,3 +249,4 @@ The plan should include:
 - metrics or checkpoints to evaluate progress and ensure adoption  
 
 Produce the plan in a format suitable for presentation (e.g. as a roadmap or schedule) so stakeholders can see what will be done, when, and why.
+```
