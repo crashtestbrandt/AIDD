@@ -21,7 +21,7 @@ Repo awareness for all following tasks:
 - Contracts live in contracts/, openapi/, proto/, or services/*/contracts/
 - Infra/IaC in infrastructure/, k8s/, helm/, terraform/, pulumi/
 - Prompt registry in prompts/ or prompt_registry/
-Before planning or generating artifacts, scan these paths and link to relevant files. Best practice is to include, e.g. `./AGENTS.md`, `.github/copilot-instructions.md`, etc..
+Before planning or generating artifacts, scan these paths and link to relevant files. Optionally include `./AGENTS.md` or `.github/copilot-instructions.md` to teach assistants repo conventions.
 
 ---
 
