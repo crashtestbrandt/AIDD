@@ -41,21 +41,21 @@ name: PR Quality Gates (Stories & ADRs)
 on:
   pull_request:
     types: [opened, edited, synchronize, reopened, ready_for_review]
-    branches: [ "**" ]
+    branches: ["**"]
 
 permissions:
   contents: read
   pull-requests: write
+  issues: write  # needed for issues.createComment on PRs
 
 jobs:
   policy-checks:
     name: Enforce Story/Task refs & ADR usage
     runs-on: ubuntu-latest
 
-    # Tune these patterns to match your repo conventions
     env:
-      # Accepts: #123 (GitHub issue), STORY-123, TASK-456, or GH-789
-      STORY_REF_REGEX: '(#\d+|\bSTORY-\d+\b|\bTASK-\d+\b|\bGH-\d+\b)'
+      # Accepts: #123 (GitHub issue), STORY-123, TASK-456, GH-789, or Jira-style PROJ-123
+      STORY_REF_REGEX: '(#\d+|\b(?:STORY|TASK|EPIC)-\d+\b|\b[A-Z][A-Z0-9]+-\d+\b|\bGH-\d+\b)'
       # ADR references typically look like ADR-001, ADR-42, etc.
       ADR_REF_REGEX: '\bADR-\d+\b'
       # Files that *require* an ADR link when changed
@@ -85,11 +85,9 @@ jobs:
             const repo = context.repo.repo;
             const prNumber = pr.number;
 
-            // PR body + title
             const body = (pr.body || "").trim();
             const title = (pr.title || "").trim();
 
-            // List changed files (max 3000; bump if needed)
             const files = await github.paginate(
               github.rest.pulls.listFiles,
               { owner, repo, pull_number: prNumber, per_page: 100 }
@@ -107,16 +105,14 @@ jobs:
 
           BODY="${{ steps.meta.outputs.body }}"
           TITLE="${{ steps.meta.outputs.title }}"
-          CHANGED_FILES="$(echo '${{ steps.meta.outputs.changed }}' | jq -r '.[]')"
+          CHANGED_FILES="$(echo '${{ steps.meta.outputs.changed }}' | jq -r '.[]?')"
 
           STORY_REF_REGEX=${STORY_REF_REGEX}
           ADR_REF_REGEX=${ADR_REF_REGEX}
 
-          # Build a single-line regex for ADR-required paths
           mapfile -t ADR_RULES <<< "$(printf '%s\n' "${ADR_REQUIRED_PATHS}")"
           ADR_RULES_CLEAN=()
           for r in "${ADR_RULES[@]}"; do
-            # strip comments and blank lines
             rr="$(echo "$r" | sed -E 's/#.*$//' | tr -d '\r')"
             [[ -n "$rr" ]] && ADR_RULES_CLEAN+=("$rr")
           done
@@ -149,7 +145,6 @@ jobs:
           echo "has_story_ref=$has_story_ref" >> $GITHUB_OUTPUT
           echo "has_adr_ref=$has_adr_ref" >> $GITHUB_OUTPUT
 
-          # Compose a human-friendly summary for the next step
           {
             echo "### PR Quality Gate Results"
             echo ""
@@ -164,14 +159,13 @@ jobs:
             fi
             echo ""
             echo "**Patterns**"
-            echo "- Story/Task: \`${STORY_REF_REGEX}\` (e.g., \`#123\`, \`STORY-42\`, \`TASK-7\`)"
+            echo "- Story/Task: \`${STORY_REF_REGEX}\` (e.g., \`#123\`, \`STORY-42\`, \`TASK-7\`, \`PROJ-123\`)"
             echo "- ADR: \`${ADR_REF_REGEX}\` (e.g., \`ADR-001\`)"
           } > gate_summary.md
 
-          # Fail if required gates not satisfied
           fail=0
           if [[ $has_story_ref -ne 1 ]]; then
-            echo "::error title=Missing Story/Task reference::Add a Story or Task reference to the PR title or body (e.g., #123, STORY-123, TASK-456)."
+            echo "::error title=Missing Story/Task reference::Add a Story or Task reference to the PR title or body (e.g., #123, STORY-123, TASK-456, PROJ-123)."
             fail=1
           fi
           if [[ $need_adr -eq 1 && $has_adr_ref -ne 1 ]]; then
@@ -219,6 +213,7 @@ jobs:
             done
           done
           exit $fails
+
 ```
 
 ---
