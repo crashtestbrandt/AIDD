@@ -130,7 +130,7 @@ See [GATES.md](./GATES.md).
 * Mutation testing ≥ Y% (ensures meaningful unit tests).  
 * Security checks: SAST, SCA, IaC scans, secret detection.  
 * Performance budgets: p95 latency, throughput, token usage.  
-* Observability budgets: metrics/log/traces must meet cardinality thresholds.  
+* Observability budgets: metrics/log/traces must meet **cardinality thresholds** (guard against high-cardinality labels).
 * AI eval scores: factuality, refusal quality, safety checks.  
 
 ---
