@@ -32,9 +32,9 @@ if [ -z "$COMMIT_MSG" ]; then
   fi
 fi
 
-# Check for Story/Task reference patterns
+# Check for Story/Task reference patterns (POSIX ERE, no \b or \d)
 # Matches: #123, STORY-123, TASK-456, EPIC-789, GH-123, PROJ-123
-REF_PATTERN='(#[0-9]+|\b(STORY|TASK|EPIC)-[0-9]+\b|\b[A-Z][A-Z0-9]+-[0-9]+\b|\bGH-[0-9]+\b)'
+REF_PATTERN='(#[0-9]+|(STORY|TASK|EPIC)-[0-9]+|[A-Z][A-Z0-9]+-[0-9]+|GH-[0-9]+)'
 
 if echo "$COMMIT_MSG" | grep -Eq "$REF_PATTERN"; then
   exit 0

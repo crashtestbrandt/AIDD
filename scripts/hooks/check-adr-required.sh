@@ -37,7 +37,7 @@ fi
 
 # Architectural files found — check for ADR reference in commit message
 COMMIT_MSG="$COMMAND"
-ADR_PATTERN='\bADR-[0-9]+\b'
+ADR_PATTERN='ADR-[0-9]+'
 
 if echo "$COMMIT_MSG" | grep -Eq "$ADR_PATTERN"; then
   exit 0

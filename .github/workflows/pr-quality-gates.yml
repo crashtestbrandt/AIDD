@@ -26,6 +26,7 @@ jobs:
 
     env:
       # Story/Task reference patterns: #123, STORY-123, TASK-456, GH-789, PROJ-123
+      # Uses grep -P (Perl regex) for \b and \d support
       STORY_REF_REGEX: '(#\d+|\b(?:STORY|TASK|EPIC)-\d+\b|\b[A-Z][A-Z0-9]+-\d+\b|\bGH-\d+\b)'
       # ADR reference pattern: ADR-001, ADR-42, etc.
       ADR_REF_REGEX: '\bADR-\d+\b'
@@ -110,13 +111,13 @@ jobs:
 
           # Check for Story/Task reference in title or body
           has_story_ref=0
-          if echo "$TITLE" | grep -Eq "$STORY_REF_REGEX" || echo "$BODY" | grep -Eq "$STORY_REF_REGEX"; then
+          if echo "$TITLE" | grep -Pq "$STORY_REF_REGEX" || echo "$BODY" | grep -Pq "$STORY_REF_REGEX"; then
             has_story_ref=1
           fi
 
           # Check for ADR reference in title or body
           has_adr_ref=0
-          if echo "$TITLE" | grep -Eq "$ADR_REF_REGEX" || echo "$BODY" | grep -Eq "$ADR_REF_REGEX"; then
+          if echo "$TITLE" | grep -Pq "$ADR_REF_REGEX" || echo "$BODY" | grep -Pq "$ADR_REF_REGEX"; then
             has_adr_ref=1
           fi
 
