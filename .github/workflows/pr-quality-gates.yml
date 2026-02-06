@@ -71,12 +71,16 @@ jobs:
 
       - name: Evaluate policy
         id: eval
+        env:
+          PR_BODY: ${{ steps.meta.outputs.body }}
+          PR_TITLE: ${{ steps.meta.outputs.title }}
+          PR_CHANGED: ${{ steps.meta.outputs.changed }}
         run: |
           set -euo pipefail
 
-          BODY="${{ steps.meta.outputs.body }}"
-          TITLE="${{ steps.meta.outputs.title }}"
-          CHANGED_FILES="$(echo '${{ steps.meta.outputs.changed }}' | jq -r '.[]?')"
+          BODY="${PR_BODY}"
+          TITLE="${PR_TITLE}"
+          CHANGED_FILES="$(echo "${PR_CHANGED}" | jq -r '.[]?')"
 
           STORY_REF_REGEX=${STORY_REF_REGEX}
           ADR_REF_REGEX=${ADR_REF_REGEX}
