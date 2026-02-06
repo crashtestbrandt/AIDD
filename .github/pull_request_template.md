@@ -1,28 +1,26 @@
 ## Summary
-<!-- High-level description of the change. What problem does it solve? -->
+What does this change do and why?
 
 ## Related Work
-- **Feature Epic(s):** #EPIC-ID
-- **Story(ies):** #STORY-ID
-- **Task(s):** #TASK-ID
-- **ADR(s):** [ADR-###](./docs/adr/ADR-###-title.md)
+- **Epic:** #
+- **Story:** #
+- **Task:** #
+- **ADR:** ADR-NNN
 
 ## Architecture Impact
 - [ ] No architectural changes
-- [ ] Yes, ADR(s) linked above
+- [ ] Yes — ADR(s) linked above
 
-If "Yes," summarize:
-- **Contracts/Interfaces Changed:** <details>
-- **Persistence/Infra Changes:** <details>
-- **New Dependencies:** <details>
+If yes:
+- Contracts/interfaces changed:
+- Persistence/infra changes:
+- New dependencies:
 
 ## Tests & Quality Gates
 - [ ] Unit tests added/updated
-- [ ] Property/contract tests added/updated
+- [ ] Contract/property tests added/updated
 - [ ] Integration tests added/updated
-- [ ] AI evals run (if applicable)
-- [ ] Coverage ≥ target
-- [ ] Mutation score ≥ target
+- [ ] Coverage meets target
 
 ## Observability & Ops
 - [ ] Metrics/logs/traces updated
@@ -30,7 +28,6 @@ If "Yes," summarize:
 - [ ] Runbooks updated
 
 ## Checklist
-- [ ] Code follows style guidelines
-- [ ] Docs updated (README, ADRs, etc.)
+- [ ] Docs updated
 - [ ] Feature behind a flag
 - [ ] Rollback plan documented

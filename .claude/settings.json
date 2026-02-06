@@ -1,0 +1,16 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "command": "scripts/hooks/check-commit-refs.sh",
+        "description": "Warn if commit message lacks Story/Task reference"
+      },
+      {
+        "matcher": "Bash",
+        "command": "scripts/hooks/check-adr-required.sh",
+        "description": "Warn if architectural files staged without ADR reference"
+      }
+    ]
+  }
+}

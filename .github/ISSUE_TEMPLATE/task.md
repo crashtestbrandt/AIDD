@@ -1,34 +1,32 @@
 ---
 name: "Task"
-description: "Per-prompt unit of work or small developer action supporting a Story."
-title: "[Task] <Actionable verb + object>"
+description: "Per-prompt unit of work supporting a Story."
+title: "[Task] "
 labels: ["type: task"]
-assignees: []
-about: "A per-prompt unit of work. Represents one or a few changes or tool runs that move a story forward. Multiple tasks roll into a story."
 ---
 
 ## Story Link
-Parent Story: #<StoryID>
+#
 
 ## Objective
 What this Task achieves toward the Story.
 
-## Steps (as applicable)
-- [ ] Update/define contracts (OpenAPI/Proto/GraphQL SDL)
-- [ ] Write acceptance tests (ATDD/BDD) and unit/property tests
-- [ ] Implement code changes against tests
-- [ ] Add/adjust metrics, logs, traces
-- [ ] Update documentation/runbook
+## Steps
+- [ ] Update/define contracts
+- [ ] Write tests
+- [ ] Implement against tests
+- [ ] Add observability
+- [ ] Update docs
 
 ## Outputs
-- PR: #<PR-ID>
-- File(s): <path>
-- Tests: <path to test suites>
+- Files:
+- Tests:
 
 ## Traceability
-Map to Story acceptance criteria and ADRs touched.
+- Acceptance criteria supported:
+- ADRs referenced:
 
-## Definition of Done (Task)
-- [ ] Tests written and passing locally/CI
-- [ ] Changes linked to Story; references ADRs if applicable
-- [ ] Code reviewed/approved or attached to PR
+## Definition of Done
+- [ ] Tests written and passing
+- [ ] Changes linked to Story
+- [ ] Code reviewed

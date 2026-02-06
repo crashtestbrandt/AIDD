@@ -1,43 +1,13 @@
-<!-- ./GATES.md -->
+# PR Quality Gates — enforces Story/Task references and ADR linkage.
+#
+# Triggers on all PRs. Checks:
+# 1. PR title or body contains a Story/Task reference (#123, STORY-123, etc.)
+# 2. If architectural files changed, PR must reference an ADR (ADR-001, etc.)
+# 3. ADR files must contain required sections (Title, Status, Context, etc.)
+#
+# Tune the regex patterns in the env block below to match your project conventions.
 
-# Quality Gates
-
-* [Home](./README.md)
-
-This document provides a drop-in [GitHub Actions workflow](#github-actions-workflow) that enforces Story/Task references and ADR linkage whenever architectural/contract/infra/schema/prompt files change. It comments helpful guidance on failure so Copilot/Codex (and humans) know exactly what to fix.
-
-## How it works (and how AI tools “learn” to comply)
-
-* **Triggers an ADR requirement** when files in common “architectural” areas change:
-
-  * `contracts/**` (OpenAPI/GraphQL/Proto), `api/**` contract files
-  * `schema/`, `db/`, `migrations/` (data changes)
-  * `infrastructure/`, `infra/`, `ops/`, `k8s/`, `helm/`, `terraform/`, `pulumi/`
-  * `prompts/`, `prompt_registry/` (your AI prompt/policy assets)
-* **Requires Story/Task refs** in the PR title or body (e.g., `#123`, `STORY-42`, `TASK-7`, `GH-99`).
-* **Requires ADR refs** (e.g., `ADR-001`) when architectural areas changed.
-* **Comments a friendly summary** on every run so Copilot/Codex can pick up the pattern and auto-fill next time (and so humans have one-glance guidance).
-* **Easy to tune**: edit the regexes at the top of the workflow’s `env:` block.
-
----
-
-## Small companion tips
-
-1. **Keep your ADR template in the repo** (e.g., `docs/adr/ADR-TEMPLATE.md`) and reference it from your PR template.
-2. **Name ADRs consistently** (`docs/adr/ADR-001-title.md`). Tools will learn to suggest the right links.
-3. In your **PR template**, include the ADR slot:
-
-   * `**ADR(s):** [ADR-###](./docs/adr/ADR-###-title.md)`
-     (You already have this — nice.)
-4. If you want stricter enforcement, add a second job to **lint ADR content** (check required headings: Title/Status/Context/Decision/Rationale/Consequences/References).
-5. On GitHub Enterprise, ensure org policies allow the workflow to post comments (requires `issues: write`).
-
-## GitHub Actions Workflow
-
-Save as: `.github/workflows/pr-quality-gates.yml`
-
-```yaml
-name: PR Quality Gates (Stories & ADRs)
+name: PR Quality Gates
 
 on:
   pull_request:
@@ -47,7 +17,7 @@ on:
 permissions:
   contents: read
   pull-requests: write
-  issues: write  # needed for issues.createComment on PRs
+  issues: write
 
 jobs:
   policy-checks:
@@ -55,17 +25,17 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      # Accepts: #123 (GitHub issue), STORY-123, TASK-456, GH-789, or Jira-style PROJ-123
+      # Story/Task reference patterns: #123, STORY-123, TASK-456, GH-789, PROJ-123
       STORY_REF_REGEX: '(#\d+|\b(?:STORY|TASK|EPIC)-\d+\b|\b[A-Z][A-Z0-9]+-\d+\b|\bGH-\d+\b)'
-      # ADR references typically look like ADR-001, ADR-42, etc.
+      # ADR reference pattern: ADR-001, ADR-42, etc.
       ADR_REF_REGEX: '\bADR-\d+\b'
-      # Files that *require* an ADR link when changed
+      # File paths that require an ADR link when changed
       ADR_REQUIRED_PATHS: |
         ^(contracts/.*\.(ya?ml|json|proto|graphql|gql))$
         ^(api/.*\.(ya?ml|json|proto|graphql|gql))$
-        ^(schema/|db/|migrations/) # DB schemas & migrations
-        ^(infrastructure/|infra/|ops/|k8s/|helm/|terraform/|pulumi/) # infra/IaC
-        ^(prompts/|prompt_registry/) # prompt/policy assets for AI
+        ^(schema/|db/|migrations/)
+        ^(infrastructure/|infra/|ops/|k8s/|helm/|terraform/|pulumi/)
+        ^(prompts/|prompt_registry/)
         ^(services/.*/contracts/.*)$
         ^(proto/.*\.proto)$
         ^(openapi/.*\.(ya?ml|json))$
@@ -111,6 +81,7 @@ jobs:
           STORY_REF_REGEX=${STORY_REF_REGEX}
           ADR_REF_REGEX=${ADR_REF_REGEX}
 
+          # Parse ADR-required path patterns from env, stripping comments
           mapfile -t ADR_RULES <<< "$(printf '%s\n' "${ADR_REQUIRED_PATHS}")"
           ADR_RULES_CLEAN=()
           for r in "${ADR_RULES[@]}"; do
@@ -118,6 +89,7 @@ jobs:
             [[ -n "$rr" ]] && ADR_RULES_CLEAN+=("$rr")
           done
 
+          # Check if any changed file matches an ADR-required path
           need_adr=0
           adr_required_files=()
           if [[ -n "${CHANGED_FILES}" ]]; then
@@ -132,11 +104,13 @@ jobs:
             done <<< "$CHANGED_FILES"
           fi
 
+          # Check for Story/Task reference in title or body
           has_story_ref=0
           if echo "$TITLE" | grep -Eq "$STORY_REF_REGEX" || echo "$BODY" | grep -Eq "$STORY_REF_REGEX"; then
             has_story_ref=1
           fi
 
+          # Check for ADR reference in title or body
           has_adr_ref=0
           if echo "$TITLE" | grep -Eq "$ADR_REF_REGEX" || echo "$BODY" | grep -Eq "$ADR_REF_REGEX"; then
             has_adr_ref=1
@@ -146,6 +120,7 @@ jobs:
           echo "has_story_ref=$has_story_ref" >> $GITHUB_OUTPUT
           echo "has_adr_ref=$has_adr_ref" >> $GITHUB_OUTPUT
 
+          # Build summary for PR comment
           {
             echo "### PR Quality Gate Results"
             echo ""
@@ -164,13 +139,14 @@ jobs:
             echo "- ADR: \`${ADR_REF_REGEX}\` (e.g., \`ADR-001\`)"
           } > gate_summary.md
 
+          # Fail if references are missing
           fail=0
           if [[ $has_story_ref -ne 1 ]]; then
             echo "::error title=Missing Story/Task reference::Add a Story or Task reference to the PR title or body (e.g., #123, STORY-123, TASK-456, PROJ-123)."
             fail=1
           fi
           if [[ $need_adr -eq 1 && $has_adr_ref -ne 1 ]]; then
-            echo "::error title=ADR required but not linked::Architectural/contract/infra/schema/prompt changes detected. Link an ADR in the PR (e.g., ADR-042) and include it under the 'Related Work' section."
+            echo "::error title=ADR required but not linked::Architectural/contract/infra/schema/prompt changes detected. Link an ADR in the PR (e.g., ADR-042)."
             fail=1
           fi
 
@@ -178,7 +154,7 @@ jobs:
             exit 1
           fi
 
-      - name: Comment results on PR (always)
+      - name: Comment results on PR
         if: always()
         uses: actions/github-script@v7
         with:
@@ -194,12 +170,13 @@ jobs:
             });
 
   adr-lint:
+    name: Lint ADR documents
     if: always()
     needs: policy-checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Lint ADRs for required sections
+      - name: Check ADR required sections
         run: |
           set -euo pipefail
           shopt -s nullglob
@@ -214,9 +191,3 @@ jobs:
             done
           done
           exit $fails
-
-```
-
----
-
-
