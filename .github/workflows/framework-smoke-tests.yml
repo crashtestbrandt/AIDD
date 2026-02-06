@@ -1,0 +1,135 @@
+# Framework Smoke Tests — validates that AIDD framework files are well-formed.
+#
+# Runs on PRs that touch any framework file. Gives adopters confidence
+# the framework is intact after customization.
+
+name: Framework Smoke Tests
+
+on:
+  pull_request:
+    paths:
+      - "CLAUDE.md"
+      - ".claude/**"
+      - "scripts/hooks/**"
+      - ".github/ISSUE_TEMPLATE/**"
+      - ".github/pull_request_template.md"
+      - ".github/workflows/**"
+      - "docs/adr/ADR-TEMPLATE.md"
+  push:
+    paths:
+      - "CLAUDE.md"
+      - ".claude/**"
+      - "scripts/hooks/**"
+      - ".github/ISSUE_TEMPLATE/**"
+      - ".github/pull_request_template.md"
+      - ".github/workflows/**"
+      - "docs/adr/ADR-TEMPLATE.md"
+
+permissions:
+  contents: read
+
+jobs:
+  smoke-tests:
+    name: Validate framework files
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: CLAUDE.md exists
+        run: test -f CLAUDE.md
+
+      - name: Slash commands exist
+        run: |
+          set -euo pipefail
+          expected="draft-adr plan-epic plan-story submit-pr"
+          for cmd in $expected; do
+            if [ ! -f ".claude/commands/${cmd}.md" ]; then
+              echo "::error::Missing slash command: .claude/commands/${cmd}.md"
+              exit 1
+            fi
+          done
+          echo "All slash commands present."
+
+      - name: Settings file is valid JSON
+        run: python3 -c "import json; json.load(open('.claude/settings.json'))"
+
+      - name: Hook scripts have valid bash syntax
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          for f in scripts/hooks/*.sh; do
+            echo "Checking syntax: $f"
+            bash -n "$f"
+          done
+          echo "All hook scripts pass syntax check."
+
+      - name: Hook scripts are executable
+        run: |
+          set -euo pipefail
+          shopt -s nullglob
+          fail=0
+          for f in scripts/hooks/*.sh; do
+            if [ ! -x "$f" ]; then
+              echo "::error file=$f::Hook script is not executable"
+              fail=1
+            fi
+          done
+          exit $fail
+
+      - name: Issue templates have valid YAML frontmatter
+        run: |
+          set -euo pipefail
+          for f in .github/ISSUE_TEMPLATE/*.md; do
+            echo "Checking frontmatter: $f"
+            # Extract YAML between --- delimiters and validate
+            python3 -c "
+          import yaml, sys
+          content = open('$f').read()
+          if not content.startswith('---'):
+              print(f'::error file=$f::Missing YAML frontmatter')
+              sys.exit(1)
+          parts = content.split('---', 2)
+          if len(parts) < 3:
+              print(f'::error file=$f::Malformed YAML frontmatter')
+              sys.exit(1)
+          data = yaml.safe_load(parts[1])
+          for key in ['name', 'description', 'title', 'labels']:
+              if key not in data:
+                  print(f'::error file=$f::Missing frontmatter key: {key}')
+                  sys.exit(1)
+          "
+          done
+          echo "All issue templates have valid frontmatter."
+
+      - name: PR template exists and has required sections
+        run: |
+          set -euo pipefail
+          f=".github/pull_request_template.md"
+          for section in "## Summary" "## Related Work" "## Architecture Impact" "## Tests & Quality Gates" "## Checklist"; do
+            if ! grep -q "^$section" "$f"; then
+              echo "::error file=$f::Missing section: $section"
+              exit 1
+            fi
+          done
+          echo "PR template has all required sections."
+
+      - name: ADR template has required sections
+        run: |
+          set -euo pipefail
+          f="docs/adr/ADR-TEMPLATE.md"
+          for section in "## Title" "## Status" "## Context" "## Decision" "## Rationale" "## Consequences" "## References"; do
+            if ! grep -q "^$section" "$f"; then
+              echo "::error file=$f::Missing section: $section"
+              exit 1
+            fi
+          done
+          echo "ADR template has all required sections."
+
+      - name: Workflow YAML files parse cleanly
+        run: |
+          set -euo pipefail
+          for f in .github/workflows/*.yml; do
+            echo "Validating YAML: $f"
+            python3 -c "import yaml; yaml.safe_load(open('$f'))"
+          done
+          echo "All workflow files are valid YAML."
