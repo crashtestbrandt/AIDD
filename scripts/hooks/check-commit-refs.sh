@@ -2,8 +2,8 @@
 # Hook: PostToolUse (Bash commands matching "git commit")
 # Validates that commit messages contain Story/Task references.
 #
-# Reads tool input JSON from stdin. Expects a "command" field containing
-# the git commit invocation (with -m message).
+# Reads tool input JSON from stdin. The full git commit command
+# (including the -m message) is checked for reference patterns.
 #
 # Exits non-zero with a warning if no Story/Task reference is found.
 
@@ -20,23 +20,11 @@ if ! echo "$COMMAND" | grep -q 'git commit'; then
   exit 0
 fi
 
-# Extract commit message from -m flag
-COMMIT_MSG=$(echo "$COMMAND" | sed -nE 's/.*-m[[:space:]]*["\x27]([^"\x27]*)["\x27].*/\1/p')
-
-# Also try heredoc-style messages
-if [ -z "$COMMIT_MSG" ]; then
-  COMMIT_MSG=$(echo "$COMMAND" | sed -nE "s/.*-m[[:space:]]*\"?\\\$\(cat <<.*EOF//p")
-  # If heredoc, try to get the full command as message
-  if [ -z "$COMMIT_MSG" ]; then
-    COMMIT_MSG="$COMMAND"
-  fi
-fi
-
-# Check for Story/Task reference patterns (POSIX ERE, no \b or \d)
+# Check the full command for Story/Task reference patterns (POSIX ERE)
 # Matches: #123, STORY-123, TASK-456, EPIC-789, GH-123, PROJ-123
 REF_PATTERN='(#[0-9]+|(STORY|TASK|EPIC)-[0-9]+|[A-Z][A-Z0-9]+-[0-9]+|GH-[0-9]+)'
 
-if echo "$COMMIT_MSG" | grep -Eq "$REF_PATTERN"; then
+if echo "$COMMAND" | grep -Eq "$REF_PATTERN"; then
   exit 0
 fi
 
