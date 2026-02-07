@@ -1,76 +1,17 @@
-<!-- ./README.md -->
+# AI-Driven Development & Delivery (AIDD)
 
-# AI-Driven Development (AIDD) Pipeline
+A lean, Claude Code-native framework for running software delivery with AI in the loop. AI agents draft ADRs, contracts, tests, and scaffolding; humans approve, refine, and own architectural decisions. Install and go.
 
-> This repository defines a lightweight, opinionated framework for running modern software delivery with AI in the loop.
-> It combines Agile issue types (Feature Epic → Story → Task) with DevOps best practices (contracts, tests, observability, quality gates) and adds AI-specific guidance for prompts, evaluation, and governance.
->
-> The goal is to make AI agents first-class contributors: they draft ADRs, contracts, tests, and scaffolding, while humans approve, refine, and own architectural decisions. Each Task is a per-prompt unit of work, Stories are PR-sized slices of functionality, and Feature Epics anchor production-ready features with architecture and traceability.
->
-> With templates, prompts, and CI/CD workflows included, this repo provides a repeatable structure where AI tools, developers, and quality gates all align to produce safe, testable, and shippable software.
+## Work hierarchy
 
----
+| Type | Scope | Size |
+|------|-------|------|
+| **Epic** | Production-ready feature | Multiple Stories, multiple sprints |
+| **Story** | Vertical slice of functionality | PR-sized, carries acceptance criteria |
+| **Task** | Single prompt or small dev action | Supports one Story acceptance criterion |
+| **ADR** | Architecture Decision Record | Created when contracts/infra/persistence change |
 
-* [Concepts](#concepts)
-* [Pipeline Overview](#pipeline-overview)
-* [Guidance](#guidance)
-  * [PROMPTS.md](./PROMPTS.md)
-* [Quality Gates](#quality-gates)
-  * [GATES.md](./GATES.md)
-* [Templates](#templates)
-  * [TEMPLATES.md](./TEMPLATES.md)
-* [Bootstrap](#bootstrap)
-
----
-
-## Concepts
-
-### Issue Types
-
-These align with Scrum/Agile usage: Epics group Stories, Stories decompose into Tasks. The twist is AI-driven “per-prompt” tasks.
-
-* **Feature Epic**  
-  A production-ready feature composed of multiple stories. Anchors architecture, ADRs, and traceability. Lives across multiple sprints if needed.
-
-* **Story**  
-  A PR-sized unit of work. Represents a coherent slice of functionality (often vertical: UI → API → DB). Carries acceptance criteria, tests, and contracts.
-
-* **Task**  
-  A per-prompt unit of work. Represents one or a few changes or tool runs that move a story forward (e.g., generating a contract, writing unit tests, updating a migration script). Multiple tasks roll into a story.
-
-  > Tasks never ship user-visible behavior alone; Stories do.
-
-### Related/Adjacent
-
-* **Architecture Decision Record (ADR)**  
-  Lightweight record of significant design choices. Linked from Epics and Stories for traceability. AI may draft; humans approve and commit.
-
-* **C4 Model**  
-  Context → Container → Component diagrams used at the Feature Epic level to clarify architecture scope (code-level diagrams optional).
-
-* **Definition of Ready (DoR)**  
-  Entry criteria for starting work on a Story/Task (e.g., acceptance criteria written, contracts drafted, risks identified).
-
-* **Definition of Done (DoD)**  
-  Exit criteria ensuring quality gates are met (tests passing, coverage thresholds, observability signals, docs updated).
-
-* **Contracts**  
-  Shared API/interface schemas (OpenAPI, GraphQL SDL, Protobuf, etc.) used as the source of truth for Story/Task implementation, with an explicit compatibility policy (backward/forward) and deprecation timelines.
-
-* **Quality Gates**  
-  Automated checks in CI/CD that enforce coverage, mutation scores, security scanning, AI eval scores, and performance budgets.
-
-* **Feature Flags**  
-  Mechanism for merging incomplete work safely. All Stories should be gated behind flags with rollback support.
-
-* **AI Governance**  
-  Policies and evaluation suites for prompts, models, and toolchains (prompt registry, eval harness, adversarial/jailbreak tests).
-
----
-
-## Pipeline Overview
-
-**Sequence Diagram**
+## Pipeline
 
 ```mermaid
 sequenceDiagram
@@ -78,175 +19,80 @@ sequenceDiagram
     participant ADR as ADR Gatekeeper
     participant Story as Story
     participant Task as Task
-    participant CI as CI/CD Quality Gates
+    participant CI as CI Quality Gates
     participant Release as Release
 
-    Epic->>ADR: Architecture overview and C4
+    Epic->>ADR: Architecture overview
     ADR-->>Epic: ADR drafted if needed
 
-    Epic->>Story: Define Stories (risk-first plan)
-    Story->>Story: Scope, acceptance criteria, test strategy
-    Story->>Story: Specify contracts, SLOs, observability
+    Epic->>Story: Decompose into risk-ordered Stories
     Story->>Task: Break into Tasks
 
-    Task->>Task: Contract-first deltas
-    Task->>Task: Write tests (ATDD/BDD, unit/property)
-    Task->>Task: Implement against tests (AI-assisted)
-    Task->>Story: Trace back to Story acceptance criteria and ADRs
-
-    Task->>CI: Submit work for checks
-    CI-->>Task: Pass or Fail
-    CI-->>Story: Merge behind feature flag if pass
+    Task->>Task: Contract-first, test-first
+    Task->>CI: Submit work
+    CI-->>Story: Merge behind feature flag
 
     Story->>Epic: Contribute toward Epic DoD
-    Epic->>Release: When DoD met, enable flag
-    Release->>Release: Update runbooks, dashboards, alerts
-
+    Epic->>Release: Enable flag when DoD met
 ```
 
-**For each Feature Epic**
+## Getting started
 
-* **Architecture Overview + ADRs**  
-  * Draft ADRs for each significant architectural choice (**AI**); review and commit (**human**).
-  * Link ADR IDs and impacted C4 elements to establish architecture conformance & traceability.
-  * Produce a lightweight C4 overview (context/container/component).
+### For Claude Code users
 
-* **Implementation Plan (story-level)**  
-  * You + AI: Generate an incremental, risk-first plan consisting of multiple **Stories**.  
-  * Each Story must show how it aligns with the Epic’s architecture and objectives.
+1. Clone this repo (or copy its structure into your project).
+2. `CLAUDE.md` auto-loads on every conversation, teaching Claude the AIDD methodology.
+3. Use the built-in slash commands:
 
----
+| Command | Purpose |
+|---------|---------|
+| `/plan-epic <description>` | Decompose a feature into risk-ordered Stories |
+| `/plan-story <description>` | Break a Story into ordered, test-first Tasks |
+| `/draft-adr <change>` | Evaluate if a change needs an ADR; draft one if so |
+| `/submit-pr` | Generate a PR body from the current diff |
 
-**For each Story**
+4. Hooks in `.claude/settings.json` automatically warn on:
+   - Commits missing Story/Task references
+   - Architectural file changes without ADR references
 
-* **Story Plan**  
-  * You + AI: Define scope, acceptance criteria, and test strategy.  
-  * You + AI: Specify contracts (OpenAPI/Protobuf/GraphQL SDL) as **source of truth** with versioning & deprecation policy, plus SLAs/SLOs and observability signals (with cardinality budgets and stable naming). 
-  * AI: Break work into **Tasks** that each map to acceptance criteria.
-  * You + AI: Establish DoR/DoD upfront.
+### For other AI tools
 
----
+The methodology in `CLAUDE.md` is plain Markdown and works as context for any AI assistant. Feed it as a system prompt or project instructions file.
 
-**For each Task**
+## Bootstrap prompts
 
-* **Task Execution**  
-  * AI: Propose contract-first changes (API/interface deltas). **You approve schema PRs.** 
-  * AI: Draft acceptance tests (ATDD/BDD optional) and unit/property tests before implementation.  
-  * AI: Generate scaffolding and implement against those tests; **you review** for conformance to Story/ADR, then run smoke/sanity checks.
-  * Tasks are traceable back to Story acceptance criteria and Feature Epic ADRs.  
-
----
-
-## Guidance
-
-See [PROMPTS.md](./PROMPTS.md).
-
-**Prompting & Tooling**
-
-* Use AI copilots/agents for:
-  * Drafting contracts (OpenAPI/Proto/GraphQL).
-  * Generating unit/property/BDD test stubs.
-  * Suggesting scaffolding for migrations or integrations.
-  * Autofixing lint/SAST findings with human review.
-  * Drafting changelogs, ADR summaries, or runbooks.
-
-* Prompt hygiene:
-  * Store prompts in a **Prompt Registry** under prompts/ with semantic versions (e.g., auth/1.2.0.md). 
-  * Treat prompts as code (reviewable, testable, diffable).  
-  * Use structured prompts for repeatable outputs (YAML/JSON schemas).  
-
-* Evaluation harness:
-  * Run golden test sets for AI-generated outputs (correctness, style, security).  
-  * Enforce non-regression with eval scores in CI/CD.  
-
----
-
-**Testing Pyramid**
-
-* **Unit & property tests** at the base (fast, automated).  
-* **Contract & integration slice tests** in the middle.  
-* **End-to-end acceptance tests** at the top (thin layer, only happy paths + critical flows).  
-* **AI-specific tests** (prompt regression, jailbreak/abuse tests, accuracy/factuality, refusal quality, cost/latency budgets).  
-
----
-
-## Quality Gates
-
-See [GATES.md](./GATES.md).
-
-* Coverage ≥ X% (line/branch).  
-* Mutation testing ≥ Y% (ensures meaningful unit tests).  
-* Security checks: SAST, SCA, IaC scans, secret detection.  
-* Performance budgets: p95 latency, throughput, token usage.  
-* Observability budgets: metrics/log/traces must meet **cardinality thresholds** (guard against high-cardinality labels).
-* AI eval scores: accuracy/factuality, refusal quality, safety checks, and cost/latency budgets with non-regression thresholds.
-
----
-
-## Templates
-
-See [TEMPLATES.md](./TEMPLATES.md).
-
-Suggested templates:
-* **Feature Epic Template** → Architecture overview, ADR links, objectives, incremental plan.
-* **Story Template** → Acceptance criteria, contract deltas, test plan, DoR/DoD.
-* **Task Template** → Prompt/tooling steps, linked Story/ADR, test-first checklist.
-* **ADR Template** → Context, decision, rationale, alternatives.
-
-## Bootstrap
-
-# Bootstrap Prompt: Fresh Project
+### Fresh project
 
 ```
-Review the following four web resources:
+Review https://github.com/crashtestbrandt/AIDD and its CLAUDE.md.
 
-- https://github.com/crashtestbrandt/AIDD/blob/main/README.md  
-- https://github.com/crashtestbrandt/AIDD/blob/main/TEMPLATES.md  
-- https://github.com/crashtestbrandt/AIDD/blob/main/GATES.md  
-- https://github.com/crashtestbrandt/AIDD/blob/main/PROMPTS.md  
-
-Then:  
-
-This repository needs to follow the AIDD ("AI-Driven Development & Delivery") framework. Generate a detailed plan / checklist / scaffold (in Markdown) for how to structure the repository, what configuration files, templates, gates, and prompt assets to include, how to integrate them, and what workflows to establish.  
-
-Include in your plan:
-
-- folder & file layout for code, templates, prompts, gates, etc.  
-- what initial template files to include (and rough content or placeholders) using AIDD’s template style  
-- what "gates" (quality / review checkpoints) to set up, and how to enforce them (e.g. via CI, pull request reviews, tooling)  
-- what prompts to capture or define upfront, per AIDD’s PROMPTS.md guidelines  
-- how to ensure the project remains consistent with the AIDD philosophy over time (e.g. versioning of templates, ownership, onboarding)  
-- approximate timeline / phases for getting all this in place  
-
-Output should be actionable, defensible (you can explain *why* each component is useful), and tailored for a fresh project starting from scratch.
+This repository needs to follow the AIDD framework. Generate an implementation
+plan covering: folder layout, templates, quality gates, slash commands, and
+how to maintain consistency with the AIDD methodology over time.
 ```
 
----
-
-# Bootstrap Prompt: Existing Project
+### Existing project
 
 ```
-Review the following four web resources:
+Review https://github.com/crashtestbrandt/AIDD and its CLAUDE.md.
 
-- https://github.com/crashtestbrandt/AIDD/blob/main/README.md  
-- https://github.com/crashtestbrandt/AIDD/blob/main/TEMPLATES.md  
-- https://github.com/crashtestbrandt/AIDD/blob/main/GATES.md  
-- https://github.com/crashtestbrandt/AIDD/blob/main/PROMPTS.md  
+Adapt this project to comply with the AIDD framework. Produce a phased plan:
+Phase 1 (quick wins), Phase 2 (deeper integration), Phase 3 (process embedding).
+Include a baseline assessment of what already aligns and what's missing.
+```
 
-Then:  
+## Repository structure
 
-
-Your goal is to adapt this project to comply with the AIDD ("AI-Driven Development") framework. Produce a detailed, incremental implementation plan (with phases) that is defensible, practical, and minimizes disruption.  
-
-The plan should include:
-
-- a baseline assessment: what parts of the current project already align with AIDD (templates, prompt assets, quality gates, etc.), and what is missing  
-- phase-by-phase steps (e.g. Phase 1: quick wins; Phase 2: deeper integration; Phase 3: process embedding).  
-- for each phase, which templates to introduce or update, which existing artifacts to refactor, which gates to enforce and how (CI, PR policy, tooling, etc.)  
-- how to define / capture missing prompts (per PROMPTS.md) and where to store them  
-- how to integrate the gates (from GATES.md) in the existing workflow without large disruption  
-- how to manage change: version control, documentation, ownership, training of team, rollback / risk mitigation  
-- metrics or checkpoints to evaluate progress and ensure adoption  
-
-Produce the plan in a format suitable for presentation (e.g. as a roadmap or schedule) so stakeholders can see what will be done, when, and why.
+```
+CLAUDE.md                          # Framework brain (auto-loaded by Claude Code)
+README.md                          # This file
+.claude/
+  settings.json                    # Hooks + config
+  commands/                        # Slash commands
+scripts/hooks/                     # Hook scripts for commit validation
+.github/
+  pull_request_template.md         # PR template
+  ISSUE_TEMPLATE/                  # Epic, Story, Task templates
+  workflows/pr-quality-gates.yml   # CI enforcement
+docs/adr/                          # Architecture Decision Records
 ```

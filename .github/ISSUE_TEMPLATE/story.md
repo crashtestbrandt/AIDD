@@ -1,47 +1,40 @@
 ---
 name: "Story"
-description: "PR-sized slice of functionality that delivers user value."
-title: "[Story] <Outcome-oriented title>"
+description: "PR-sized vertical slice of functionality."
+title: "[Story] "
 labels: ["type: story"]
-assignees: []
-about: "A PR-sized unit of work. Represents a coherent slice of functionality (often vertical: UI → API → DB). Carries acceptance criteria, tests, and contracts."
 ---
 
+## Epic Link
+#
+
 ## Summary
-Brief description of the user or system behavior.
+Brief description of the behavior this Story delivers.
 
 ## Acceptance Criteria
 - [ ] Given/When/Then #1
 - [ ] Given/When/Then #2
 
-## Contracts & Compatibility
-- Contract delta(s): <OpenAPI/GraphQL/Protobuf path and version>
-- Versioning & deprecation plan: <strategy>
+## Contracts
+- Contract delta(s): path and version
+- Compatibility: backward/forward
 
 ## Test Strategy
-- Unit tests: <scope>
-- Property tests (if applicable): <scope>
-- Contract tests: <scope>
-- Integration slice tests: <scope>
-- AI evals (if applicable): <scope>
+- Unit tests:
+- Contract tests:
+- Integration tests:
 
 ## Observability
-- Metrics: name, labels, cardinality budget
-- Logs: event names, structure, retention
-- Traces: spans/instrumentation updates
+- Metrics:
+- Logs:
+- Traces:
 
 ## Tasks
-- [ ] Task placeholder (link to task issue)
+- [ ] #  — Task title
 
-## Definition of Ready (DoR)
-- [ ] Acceptance criteria defined
-- [ ] Contracts drafted and reviewed
-- [ ] Test strategy approved
-- [ ] Observability plan documented
-
-## Definition of Done (DoD)
-- [ ] All tasks complete and traceable
-- [ ] Tests added/updated and passing
-- [ ] Observability assets deployed
-- [ ] Docs/runbooks updated
-- [ ] Feature flag in place with rollback plan
+## Definition of Done
+- [ ] Acceptance criteria verified by tests
+- [ ] Contracts versioned and compatible
+- [ ] Observability in place
+- [ ] Docs updated
+- [ ] PR merged with quality gates passing
