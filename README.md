@@ -1,14 +1,14 @@
-# AI-Driven Development & Delivery (AIDD)
+# AI-Driven Development (AIDD)
 
-A lean, Claude Code-native framework for running software delivery with AI in the loop. AI agents draft ADRs, contracts, tests, and scaffolding; humans approve, refine, and own architectural decisions. Install and go.
+A lean, Claude Code-native methodology for AI-assisted software development. Slash commands plan epics, decompose stories, draft ADRs, and assemble PRs; hooks enforce traceability; humans own architectural decisions.
 
 ## Work hierarchy
 
-| Type | Scope | Size |
-|------|-------|------|
-| **Epic** | Production-ready feature | Multiple Stories, multiple sprints |
+| Type | Scope | Granularity |
+|------|-------|-------------|
+| **Epic** | Production-ready feature | Multiple Stories |
 | **Story** | Vertical slice of functionality | PR-sized, carries acceptance criteria |
-| **Task** | Single prompt or small dev action | Supports one Story acceptance criterion |
+| **Task** | Single prompt or small dev action | Within one Story |
 | **ADR** | Architecture Decision Record | Created when contracts/infra/persistence change |
 
 ## Pipeline
@@ -30,10 +30,10 @@ sequenceDiagram
 
     Task->>Task: Contract-first, test-first
     Task->>CI: Submit work
-    CI-->>Story: Merge behind feature flag
+    CI-->>Story: Merge when gates pass
 
     Story->>Epic: Contribute toward Epic DoD
-    Epic->>Release: Enable flag when DoD met
+    Epic->>Release: Ship when DoD met
 ```
 
 ## Getting started
@@ -84,15 +84,17 @@ Include a baseline assessment of what already aligns and what's missing.
 ## Repository structure
 
 ```
-CLAUDE.md                          # Framework brain (auto-loaded by Claude Code)
-README.md                          # This file
+CLAUDE.md                              # Methodology definition (auto-loaded by Claude Code)
+README.md                              # This file
 .claude/
-  settings.json                    # Hooks + config
-  commands/                        # Slash commands
-scripts/hooks/                     # Hook scripts for commit validation
+  settings.json                        # Hooks + config
+  commands/                            # Slash commands
+scripts/hooks/                         # Hook scripts for commit validation
 .github/
-  pull_request_template.md         # PR template
-  ISSUE_TEMPLATE/                  # Epic, Story, Task templates
-  workflows/pr-quality-gates.yml   # CI enforcement
-docs/adr/                          # Architecture Decision Records
+  pull_request_template.md             # PR template
+  ISSUE_TEMPLATE/                      # Epic, Story, Task templates
+  workflows/
+    pr-quality-gates.yml               # CI quality gates
+    framework-smoke-tests.yml          # Framework file validation
+docs/adr/                              # Architecture Decision Records
 ```

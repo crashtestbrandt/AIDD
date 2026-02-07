@@ -1,6 +1,6 @@
 # AIDD Framework
 
-This file defines the AI-Driven Development & Delivery (AIDD) methodology. It is auto-loaded by Claude Code on every conversation in this repository.
+This file defines the AI-Driven Development (AIDD) methodology. It is auto-loaded by Claude Code on every conversation in this repository.
 
 ## Work hierarchy
 
